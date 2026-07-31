@@ -1,6 +1,8 @@
 package com.shubham.jobportal.job.service;
 
+import com.shubham.jobportal.dto.JobApplicationDto;
 import com.shubham.jobportal.dto.JobDto;
+import com.shubham.jobportal.dto.UpdateJobApplicationDto;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ public interface IJobService {
 
     JobDto createJob(JobDto jobDto, String employerEmail);
 
+    List<JobApplicationDto> getApplicationsByJobForEmployer(Long jobId);
 
+    boolean updateJobApplication(UpdateJobApplicationDto updateJobApplicationDto);
 
 }

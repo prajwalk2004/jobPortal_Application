@@ -1,7 +1,9 @@
 package com.shubham.jobportal.job.controller;
 
 
+import com.shubham.jobportal.dto.JobApplicationDto;
 import com.shubham.jobportal.dto.JobDto;
+import com.shubham.jobportal.dto.UpdateJobApplicationDto;
 import com.shubham.jobportal.job.service.IJobService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +52,23 @@ public class jobController {
         JobDto updatedJob = jobService.updateJobStatus(jobId, status.toUpperCase(), employerEmail);
         return ResponseEntity.ok(updatedJob);
     }
+    @GetMapping("/applications/{jobId}/employer")
+    public ResponseEntity<List<JobApplicationDto>> getApplicationsByJobForEmployer(
+            @PathVariable Long jobId) {
+        List<JobApplicationDto> applications = jobService.getApplicationsByJobForEmployer(jobId);
+        return ResponseEntity.ok(applications);
+    }
+    @PatchMapping("/applications/employer")
+    public ResponseEntity<String >updateJobApplication(
+            @RequestBody  @Valid UpdateJobApplicationDto updateJobApplicationDto
+            ){
+        boolean is_updated=jobService.updateJobApplication(updateJobApplicationDto);
+        if( !is_updated){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed to update status");
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("updated sucessfully");
+    }
+
 
 }

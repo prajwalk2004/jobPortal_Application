@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     updated_by VARCHAR(20) DEFAULT NULL,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
     );
--- Create roles table
+
 CREATE TABLE IF NOT EXISTS roles (
                                      id     BIGINT AUTO_INCREMENT PRIMARY KEY,
                                      name        VARCHAR(50) NOT NULL UNIQUE,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS roles (
                                      updated_by VARCHAR(20) DEFAULT NULL
 );
 
--- Create users table
+
 CREATE TABLE IF NOT EXISTS users (
                                      id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                      name VARCHAR(255) NOT NULL,

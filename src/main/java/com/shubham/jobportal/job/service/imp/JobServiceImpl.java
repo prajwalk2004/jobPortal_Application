@@ -1,10 +1,14 @@
 package com.shubham.jobportal.job.service.imp;
 
 
+import com.shubham.jobportal.dto.JobApplicationDto;
 import com.shubham.jobportal.dto.JobDto;
+import com.shubham.jobportal.dto.UpdateJobApplicationDto;
 import com.shubham.jobportal.entity.Job;
+import com.shubham.jobportal.entity.JobApplication;
 import com.shubham.jobportal.entity.JobPortalUser;
 import com.shubham.jobportal.job.service.IJobService;
+import com.shubham.jobportal.repository.JobApplicationRepository;
 import com.shubham.jobportal.repository.JobPortalUserRepository;
 import com.shubham.jobportal.repository.JobRepository;
 import com.shubham.jobportal.util.ApplicationUtility;
@@ -24,6 +28,8 @@ public class JobServiceImpl  implements IJobService {
     private  final JobRepository jobRepository;
 
     private final JobPortalUserRepository UserRepository;
+
+    private final JobApplicationRepository jobApplicationRepository;
 
 
     @Override
@@ -56,6 +62,23 @@ public class JobServiceImpl  implements IJobService {
        Job savedJob =jobRepository.save(job);
        return  ApplicationUtility.transformJobToDto(job);
 
+    }
+
+    @Override
+    public List<JobApplicationDto> getApplicationsByJobForEmployer(Long jobId) {
+        List<JobApplication> applications = jobApplicationRepository.findByJobIdOrderByAppliedAtAsc(jobId);
+        return applications.stream()
+                .map(jobApplication -> ApplicationUtility.mapToJobApplicationDto(jobApplication))
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    @Override
+    public boolean updateJobApplication(UpdateJobApplicationDto updateJobApplicationDto) {
+       int updated_row=jobApplicationRepository.updateStatusAndNotesById(updateJobApplicationDto.status().name(), updateJobApplicationDto.notes()
+       , updateJobApplicationDto.applicationId(),ApplicationUtility.getLoggedInUser());
+       return updated_row>0;
     }
 
     @Override
