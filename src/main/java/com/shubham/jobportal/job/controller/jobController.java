@@ -22,12 +22,11 @@ public class jobController {
 
     private  final IJobService jobService;
 
-    @GetMapping("/employer")
-    public ResponseEntity<?>getEmployerJob(Authentication authentication){
-        String employerEmail=authentication.getName();
-        List<JobDto>jobs=jobService.getEmployerJobs(employerEmail);
+    @GetMapping(path = "/employer", version = "1.0")
+    public ResponseEntity<List<JobDto>> getEmployerJobs(Authentication authentication) {
+        String employerEmail = authentication.getName();
+        List<JobDto> jobs = jobService.getEmployerJobs(employerEmail);
         return ResponseEntity.ok(jobs);
-
     }
 
     @PostMapping("/employer")

@@ -30,11 +30,11 @@ public class BaseEntity {
 
     @LastModifiedDate
     @UpdateTimestamp
-    @Column(name = "UPDATED_AT",insertable = false)
+    @Column(name = "UPDATED_AT", length = 500, insertable = false)
     private Instant updatedAt;
 
     @LastModifiedBy
-    @Column(name = "UPDATED_BY", length = 20,insertable = false)
+    @Column(name = "UPDATED_BY", length = 500,insertable = false)
     private String updatedBy;
 
 }

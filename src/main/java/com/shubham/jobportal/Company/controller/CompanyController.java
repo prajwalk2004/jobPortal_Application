@@ -39,6 +39,7 @@ public class CompanyController {
                     .body("Request processing failed");
         }
     }
+    @GetMapping(path = "/admin")
     public ResponseEntity<List<Companydto>>getAllCompaniesforAdmin(){
         List<Companydto>companyList=companyService.getAllCompaniesForAdmin();
         return ResponseEntity.ok().body(companyList);

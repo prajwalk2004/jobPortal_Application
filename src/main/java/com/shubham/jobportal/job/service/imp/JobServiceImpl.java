@@ -82,6 +82,7 @@ public class JobServiceImpl  implements IJobService {
     }
 
     @Override
+    @Transactional
     public JobDto updateJobStatus(Long jobId, String status, String employerEmail) {
         if (!status.equals("ACTIVE") && !status.equals("CLOSED") && !status.equals("DRAFT")) {
             throw new RuntimeException("Invalid status. Must be ACTIVE, CLOSED, or DRAFT");
