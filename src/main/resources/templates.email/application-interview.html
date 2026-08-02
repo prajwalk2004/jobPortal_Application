@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"/><title th:text="${companyName}">Company</title></head>
+<body style="margin:0;padding:0;background-color:#f4f5f7;font-family:Arial,Helvetica,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f5f7;padding:24px 0;">
+    <tr><td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
+            <tr><td style="padding:24px;text-align:center;border-bottom:1px solid #eeeeee;">
+                <img th:if="${companyLogo}" th:src="${companyLogo}" alt="Company logo" style="max-height:48px;margin-bottom:8px;"/>
+                <p style="margin:0;font-size:18px;font-weight:bold;color:#1a1a1a;" th:text="${companyName}">Company</p>
+            </td></tr>
+            <tr><td style="padding:32px;">
+                <p style="font-size:16px;color:#1a1a1a;margin:0 0 16px;">Congratulations <span th:text="${candidateName}">Candidate</span>!</p>
+                <p style="font-size:15px;color:#333333;line-height:1.6;margin:0 0 16px;">
+                    We were impressed by your profile and would like to invite you to interview for <b th:text="${jobTitle}">Job Title</b> at <span th:text="${companyName}">Company</span>.
+                </p>
+                <p style="font-size:15px;color:#333333;line-height:1.6;margin:0 0 24px;">
+                    Our recruitment team will reach out shortly to schedule a time. If you have any questions in the meantime, feel free to reply to this email.
+                </p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fb;border-radius:6px;margin:0 0 24px;">
+                    <tr><td style="padding:20px;">
+                        <span style="display:inline-block;padding:4px 12px;border-radius:12px;background-color:#e6f4ea;color:#1e7e34;font-size:12px;font-weight:bold;" th:text="${applicationStatus}">STATUS</span>
+                        <p style="margin:16px 0 6px;font-size:14px;color:#333333;">Job title: <span th:text="${jobTitle}">-</span></p>
+                        <p style="margin:0 0 6px;font-size:14px;color:#333333;">Application ID: <span th:text="${applicationId}">-</span></p>
+                        <p style="margin:0;font-size:14px;color:#333333;">Status updated on: <span th:text="${statusUpdateDate}">-</span></p>
+                    </td></tr>
+                </table>
+            </td></tr>
+            <tr><td style="background-color:#f8f9fb;padding:20px 32px;">
+                <p style="margin:0 0 4px;font-size:13px;font-weight:bold;color:#333333;">Company information</p>
+                <p style="margin:0 0 2px;font-size:12px;color:#666666;" th:text="${companyName}">Company</p>
+                <p style="margin:0 0 2px;font-size:12px;color:#666666;" th:if="${companyWebsite}" th:text="${companyWebsite}">website</p>
+                <p style="margin:0 0 2px;font-size:12px;color:#666666;" th:if="${companyEmail}" th:text="${companyEmail}">email</p>
+                <p style="margin:0;font-size:12px;color:#666666;" th:if="${companyAddress}" th:text="${companyAddress}">address</p>
+            </td></tr>
+            <tr><td style="background-color:#f4f5f7;padding:16px;text-align:center;">
+                <p style="margin:0;font-size:11px;color:#999999;">&#169; <span th:text="${companyName}">Company</span>. All rights reserved.</p>
+            </td></tr>
+        </table>
+    </td></tr>
+</table>
+</body>
+</html>
