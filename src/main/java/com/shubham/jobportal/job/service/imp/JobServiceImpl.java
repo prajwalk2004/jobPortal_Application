@@ -4,6 +4,7 @@ package com.shubham.jobportal.job.service.imp;
 import com.shubham.jobportal.dto.JobApplicationDto;
 import com.shubham.jobportal.dto.JobDto;
 import com.shubham.jobportal.dto.UpdateJobApplicationDto;
+import com.shubham.jobportal.email.event.ApplicationStatusChangedEvent;
 import com.shubham.jobportal.entity.Job;
 import com.shubham.jobportal.entity.JobApplication;
 import com.shubham.jobportal.entity.JobPortalUser;
@@ -14,6 +15,7 @@ import com.shubham.jobportal.repository.JobRepository;
 import com.shubham.jobportal.util.ApplicationUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ public class JobServiceImpl  implements IJobService {
     private final JobPortalUserRepository UserRepository;
 
     private final JobApplicationRepository jobApplicationRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
 
     @Override
@@ -76,9 +79,20 @@ public class JobServiceImpl  implements IJobService {
     @Transactional
     @Override
     public boolean updateJobApplication(UpdateJobApplicationDto updateJobApplicationDto) {
+        JobApplication jobApplication=jobApplicationRepository.findById(updateJobApplicationDto.applicationId())
+                .orElseThrow(()->new RuntimeException("application not found wwith this is"+updateJobApplicationDto.applicationId()));
+        String previous_status=jobApplication.getStatus();
+        String new_status=updateJobApplicationDto.status().name();
+
        int updated_row=jobApplicationRepository.updateStatusAndNotesById(updateJobApplicationDto.status().name(), updateJobApplicationDto.notes()
        , updateJobApplicationDto.applicationId(),ApplicationUtility.getLoggedInUser());
-       return updated_row>0;
+       boolean updated=updated_row>0;
+        if (updated && !previous_status.equals(new_status)){
+            jobApplication.getJob().getCompany().getName();
+            jobApplication.getUser().getName();
+            eventPublisher.publishEvent(new ApplicationStatusChangedEvent(jobApplication, previous_status, new_status));
+        }
+        return updated;
     }
 
     @Override

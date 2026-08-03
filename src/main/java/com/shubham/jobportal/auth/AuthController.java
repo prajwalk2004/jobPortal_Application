@@ -5,6 +5,7 @@ import com.shubham.jobportal.dto.LoginRequestDto;
 import com.shubham.jobportal.dto.LoginResponseDto;
 import com.shubham.jobportal.dto.RegisterRequestDto;
 import com.shubham.jobportal.dto.UserDto;
+import com.shubham.jobportal.email.event.UserRegisteredEvent;
 import com.shubham.jobportal.entity.JobPortalUser;
 import com.shubham.jobportal.entity.Role;
 import com.shubham.jobportal.repository.JobPortalUserRepository;
@@ -12,6 +13,7 @@ import com.shubham.jobportal.repository.RoleRepository;
 import com.shubham.jobportal.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +43,7 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
    private final CompromisedPasswordChecker compromisedPasswordChecker;
+    private final ApplicationEventPublisher eventPublisher;
 
     @PostMapping(value = "/login/public")
     public ResponseEntity<LoginResponseDto> apiLogin(@RequestBody LoginRequestDto loginRequestDto) {
@@ -99,6 +102,7 @@ public class AuthController {
                         ApplicationConstants.ROLE_JOB_SEEKER));
         jobPortalUser.setRole(role);
         jobPortalUserRepository.save(jobPortalUser);
+         eventPublisher.publishEvent(new UserRegisteredEvent(jobPortalUser));
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
     private ResponseEntity<LoginResponseDto> buildErrorResponse(HttpStatus status,

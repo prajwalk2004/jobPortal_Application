@@ -120,3 +120,15 @@ CREATE TABLE IF NOT EXISTS job_applications (
                                                 FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE,
                                                 UNIQUE KEY unique_user_job_application (user_id, job_id) -- Prevent duplicate applications
 );
+CREATE TABLE IF NOT EXISTS email_notifications (
+                                                   id BIGINT NOT NULL AUTO_INCREMENT,
+                                                   recipient_email VARCHAR(255) NOT NULL,
+                                                   subject VARCHAR(255) NOT NULL,
+                                                   template_name VARCHAR(100) NOT NULL,
+                                                   notification_type VARCHAR(50) NOT NULL,
+                                                   status VARCHAR(20) NOT NULL,
+                                                   sent_at TIMESTAMP NULL,
+                                                   error_message TEXT,
+
+                                                   PRIMARY KEY (id)
+);

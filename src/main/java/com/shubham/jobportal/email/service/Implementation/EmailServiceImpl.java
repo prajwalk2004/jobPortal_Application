@@ -97,12 +97,9 @@ public class EmailServiceImpl implements IEmailService {
     private record PreparedEmail(String to, String subject, String template, String type, Context context) {
     }
 
-    /**
-     * statusForDisplay is passed explicitly rather than read from application.getStatus():
-     * status updates go through a bulk JPQL query (JobApplicationRepository.updateStatusAndNotesById),
-     * which does not sync the in-memory managed entity, so the entity's status field can be stale
-     * at the moment this runs.
-     */
+   /*
+   few thing need to managed --- which not working properly, config file as well...
+    */
     private PreparedEmail applicationEmail(JobApplication application, String statusForDisplay,
                                            String subject, String template, String type) {
         Job job = application.getJob();

@@ -3,12 +3,14 @@ package com.shubham.jobportal.user.service.Implementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shubham.jobportal.constants.ApplicationConstants;
 import com.shubham.jobportal.dto.*;
+import com.shubham.jobportal.email.event.ApplicationCreatedEvent;
 import com.shubham.jobportal.entity.*;
 import com.shubham.jobportal.repository.*;
 import com.shubham.jobportal.user.service.IUserService;
 import com.shubham.jobportal.util.ApplicationUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements IUserService {
     private final JobRepository jobRepository;
     private final ProfileRepository profileRepository;
     private final JobApplicationRepository jobApplicationRepository;
-
+    private final ApplicationEventPublisher eventPublisher;
     @Override
     public Optional<UserDto> searchUserByemail(String email) {
              return  userRepository.findJobPortalUserByEmail(email).map(this::mapToUserDto);
@@ -172,6 +174,8 @@ public class UserServiceImpl implements IUserService {
         application.setCoverLetter(applyJobRequestDto.coverLetter());
         JobApplication saved = jobApplicationRepository.save(application);
         job.setApplicationsCount(job.getApplicationsCount() != null ? job.getApplicationsCount() + 1 : 1);
+        saved.getJob().getCompany().getName();
+        eventPublisher.publishEvent(new ApplicationCreatedEvent(saved));
         return ApplicationUtility.mapToJobApplicationDto(saved);
     }
     @Transactional
